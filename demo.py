@@ -1,6 +1,6 @@
 import json
 import threading
-from functools import lru_cache
+from functools import lru_cache, map
 import math
 
 class ConfigError(Exception):
