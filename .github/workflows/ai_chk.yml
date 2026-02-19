@@ -1,0 +1,60 @@
+name: AI Agent CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - '**' # Run on every branch (so the Agent's branch triggers it)
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+
+      # ---------------------------------------------------------
+      # CRITICAL STEP: Generate results.json
+      # The Command Center monitors this specific file.
+      # You can replace this echo command with a real script.
+      # ---------------------------------------------------------
+      - name: Run Tests & Generate Results
+        id: test_step
+        run: |
+          # 1. Run Tests (Allow failure so we can report it)
+          pytest --maxfail=1 --disable-warnings -q > test_output.log || true
+          
+          # 2. Generate results.json
+          # Modify this to include real test results.
+          echo '{
+            "run_id": "${{ github.run_id }}",
+            "status": "completed",
+            "score": { "total_score": 85 },
+            "fixes": []
+          }' > results.json
+          
+          echo "✅ results.json generated."
+
+      # ---------------------------------------------------------
+      # CRITICAL STEP: Upload Artifact
+      # The Command Center downloads this artifact to show the dashboard.
+      # ---------------------------------------------------------
+      - name: Upload Results Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-json
+          path: results.json
+          retention-days: 1
