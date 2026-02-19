@@ -18,6 +18,10 @@ def count_vowels(word: str) -> int:
     return count  # Corrected return type to int
 
 
-data: list[float] = list(map(float, input("Enter numbers separated by space: ").split()))
+def get_input_numbers() -> list[float]:
+    data: list[float] = list(map(float, input("Enter numbers separated by space: ").split()))
+    return data
+
+data: list[float] = get_input_numbers()
 
 print("Average is:", calculate_average(data))
