@@ -6,7 +6,7 @@ def calculate_average(numbers: list[float]) -> float:
         total += n
     
     average: float = total / len(numbers)
-    return average
+    return average  # Removed str() since return type is float
 
 
 data: list[float] = list(map(float, input("Enter numbers separated by space: ").split()))
