@@ -1,11 +1,10 @@
 import json
 import threading
 from functools import lru_cache
-
+import math
 
 class ConfigError(Exception):
     pass
-
 
 class DataProcessor:
     def __init__(self, config_file: str):
