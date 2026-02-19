@@ -6,7 +6,7 @@ def calculate_average(numbers: list[float]) -> float:
         total += n
     
     average: float = total / len(numbers)
-    return average  # Removed str() since return type is float
+    return average  # Corrected return type to float
 
 
 def count_vowels(word: str) -> int:
