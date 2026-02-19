@@ -5,7 +5,7 @@ on:
     branches:
       - '**' # Run on every branch (so the Agent's branch triggers it)
   pull_request:
-    branches:
+    branches
       - main
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Code
+      - name: Checkout Code555
         uses: actions/checkout@v3
 
       - name: Set up Python
