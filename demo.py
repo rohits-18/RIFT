@@ -12,8 +12,11 @@ class DataProcessor:
         self.data = []
 
     def load_config(self, filename: str) -> dict:
-        with open(filename, "r") as f:
-            config = json.load(f)
+        try:
+            with open(filename, "r") as f:
+                config = json.load(f)
+        except FileNotFoundError:
+            raise ConfigError("Config file not found")
 
         if "multiplier" not in config:
             raise ConfigError("Missing 'multiplier' in config")
@@ -22,7 +25,6 @@ class DataProcessor:
 
     @lru_cache(maxsize=None)
     def compute(self, value: float) -> float:
-        # Intentional logical landmine
         return value * self.config["multiplier"]
 
     def process(self, values: list[float]) -> float:
@@ -40,7 +42,10 @@ class DataProcessor:
         for t in threads:
             t.join()
 
-        return sum(results) / len(results)
+        if len(results) == 0:
+            return 0.0
+        else:
+            return sum(results) / len(results)
 
 
 processor = DataProcessor("config.json")
